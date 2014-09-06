@@ -142,6 +142,7 @@
                         // Subscribe to the onClick event of the BODY node to remove any context menus
                         // that may be open.
                         var body = $angular.element($window.document.getElementsByTagName('html'));
+                        contextMenu.attachedClick = true;
 
                         body.bind('click', function onClick() {
 
