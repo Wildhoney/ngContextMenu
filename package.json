@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/Wildhoney/ngContextMenu/issues"
   },
-  "homepage": "https://github.com/Wildhoney/ngContextMenu"
+  "homepage": "https://github.com/Wildhoney/ngContextMenu",
+  "dependencies": {
+    "express": "^4.8.8"
+  }
 }
