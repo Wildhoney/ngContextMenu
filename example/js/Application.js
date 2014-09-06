@@ -14,8 +14,9 @@
          * @type {Object}
          */
         $scope.messages = [
-            { subject: 'Really it is possible?', from: 'Carla', date: new Date() },
-            { subject: 'Really it is possible?', from: 'Carla', date: new Date() }
+            { subject: 'Really it is Possible? I want to believe...', from: 'Carla', date: new Date() },
+            { subject: 'Facebook.com: New Message', from: 'Simon', date: new Date() },
+            { subject: 'I Recommend "JavaScript: The Good Parts"!', from: 'Alison', date: new Date() }
         ];
 
     });

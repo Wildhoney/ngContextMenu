@@ -4,29 +4,108 @@
     font-family: Arial, Helvetica, sans-serif;
 }
 
+label {
+    margin: 20px;
+    display: block;
+    font-size: 12px;
+    font-weight: bold;
+    font-family: Lato, Arial, Tahoma Helvetica, sans-serif;
+    text-transform: uppercase;
+}
+
+/* Messages */
+
 ul.messages {
     margin: 20px;
-    border: 1px solid lightgray;
+    border: 3px solid rgba(0, 0, 0, .15);
     list-style-type: none;
-    width: 300px;
+    width: 350px;
 }
 
 ul.messages li.message {
-    padding: 5px;
+    padding: 10px;
+    cursor: pointer;
+    border-bottom: 1px solid rgba(0, 0, 0, .15);
 }
+
+ul.messages li.message h2 {
+    font-size: 11px;
+    font-weight: normal;
+}
+
+ul.messages li.message h2 a {
+    color: dodgerblue;
+    transition: color .25s;
+    text-decoration: none;
+    font-family: Lato, Arial, Tahoma Helvetica, sans-serif;
+}
+
+ul.messages li.message div.sent {
+    transition: color .25s;
+}
+
+ul.messages li.message div.sent {
+    margin-top: 5px;
+    font-size: 11px;
+    color: rgba(0, 0, 0, .5);
+}
+
+ul.messages li.message:hover h2 a {
+    color: black;
+}
+
+ul.messages li.message:hover div.sent {
+    color: black;
+}
+
+ul.messages li.message:last-of-type {
+    border-bottom: 0;
+}
+
+/* Menu */
 
 ul.menu {
     position: absolute;
-    border: 1px solid rgba(0, 0, 0, .2);
+    border: 3px solid rgba(0, 0, 0, .15);
     list-style-type: none;
     background-color: white;
-    box-shadow: 0 0 5px rgba(0, 0, 0, .25);
+    box-shadow: 0 0 25px rgba(0, 0, 0, .2);
     width: 150px;
     top: 0;
     left: 0;
 }
 
 ul.menu li {
-    border-bottom: 1px solid rgba(0, 0, 0, .2);
-    padding: 10px;
+    border-bottom: 1px solid rgba(0, 0, 0, .15);
+    padding: 10px 12px;
+    margin: 0;
+    cursor: pointer;
+    transition: background-color .25s;
+    font-size: 12px;
+    font-family: Lato, Arial, Tahoma Helvetica, sans-serif;
+    overflow: hidden;
+}
+
+ul.menu li img {
+    float: left;
+    overflow: hidden;
+    margin-right: 12px;
+}
+
+ul.menu li:last-of-type {
+    border-bottom: 0;
+}
+
+ul.menu li a {
+    color: dodgerblue;
+    transition: color .25s;
+    text-decoration: none;
+    font-family: Lato, Arial, Tahoma Helvetica, sans-serif;
+    float: left;
+    overflow: hidden;
+    margin-top: 5px;
+}
+
+ul.menu li:hover a {
+    color: black;
 }
