@@ -4,7 +4,9 @@
   "description": "Custom context menus for scoped items.",
   "main": "dist/ng-context-menu.js",
   "scripts": {
-    "test": "grunt test"
+    "test": "grunt test",
+    "start": "node example/server/default.js",
+    "postinstall": "bower install; grunt build"
   },
   "repository": {
     "type": "git",
