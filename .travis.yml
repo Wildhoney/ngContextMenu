@@ -17,6 +17,6 @@ deploy:
   provider: heroku
   api_key:
     secure: cp83ruF2jTRStzOCdQO4lVeCa/g55OpJd7+0snWUImRln78n15eB4ZRgfsf0Sv3meEkKjbQ6IUYKHI4DYxvitlyerubxSkZjMC8H2AkvC+HO5Xv/FYbtKrF9hXBGVoS8Qro0z8OMX6R17mF5d9UoLvp9elj8tUKXdV+2GQUPn5U=
-  app: ng-context-menu
+  app: ng-contextmenu
   on:
     repo: Wildhoney/ngContextMenu
