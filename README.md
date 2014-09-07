@@ -48,8 +48,10 @@ Sometimes you may wish to invoke this behaviour yourself, in which case you need
 
 ## Exceptions
 
+Thrown when the specified context menu path cannot be found:
+
  > Invalid context menu path: *templateName*.
- Thrown when the specified context menu path cannot be found.
+ 
+Thrown when the partial is adding more than one child &ndash; when **only** one is expected:
  
  > Context menu is adding *number* immediate children.
- Thrown when the partial is adding more than one child &ndash; when **only** one is expected.

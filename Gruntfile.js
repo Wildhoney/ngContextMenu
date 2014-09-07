@@ -79,6 +79,23 @@ module.exports = function(grunt) {
                 dest: 'releases/master.zip'
             }
 
+        },
+
+        /**
+         * @property jasmine
+         * @type {Object}
+         */
+        jasmine: {
+            pivotal: {
+                src: ['module/*.js'],
+                options: {
+                    specs: 'tests/spec.js',
+                    helpers: [
+                                'example/js/vendor/angular/angular.js',
+                                'example/js/vendor/angular-mocks/angular-mocks.js'
+                             ]
+                }
+            }
         }
 
     });
@@ -91,7 +108,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-copy');
 
     grunt.registerTask('build', ['concat', 'uglify', 'copy', 'compress']);
-    grunt.registerTask('test', ['jshint']);
-    grunt.registerTask('default', ['jshint', 'concat', 'copy', 'uglify', 'compress']);
+    grunt.registerTask('test', ['jshint', 'jasmine']);
+    grunt.registerTask('default', ['test', 'build']);
 
 };
