@@ -45,3 +45,11 @@ Now when you test your newly setup context menu, a right click on the node with 
 `ngContextMenu` ships with a simple `contextMenu` service which creates the necessary relationship between all of the context menus &ndash; this allows the opening of another menu &mdash;or a click on the `document` node&mdash; to close the currently opened menu.
 
 Sometimes you may wish to invoke this behaviour yourself, in which case you need to add the `contextMenu` service to your controller, directive, service, and then invoke the `cancelAll` method on it.
+
+## Exceptions
+
+ > Invalid context menu path: *templateName*.
+ Thrown when the specified context menu path cannot be found.
+ 
+ > Context menu is adding *number* immediate children.
+ Thrown when the partial is adding more than one child &ndash; when **only** one is expected.

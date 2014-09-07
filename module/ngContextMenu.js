@@ -99,17 +99,32 @@
                     $scope.menu = null;
 
                     /**
+                     * @method throwException
+                     * @throw Exception
+                     * @param message {String}
+                     * @return {void}
+                     */
+                    $scope.throwException = function throwException(message) {
+                        throw "ngContextMenu: " + message + ".";
+                    };
+
+                    /**
                      * @method cacheTemplate
-                     * @param templateName {String}
+                     * @param templatePath {String}
                      * @param model {Object}
                      * @return {void}
                      */
-                    $scope.cacheTemplate = function cacheTemplate(templateName, model) {
+                    $scope.cacheTemplate = function cacheTemplate(templatePath, model) {
 
-                        $http.get(templateName, { cache: $templateCache }).then(function then(response) {
+                        $http.get(templatePath, { cache: $templateCache }).then(function then(response) {
 
                             // Interpolate the supplied template with the scope.
                             $scope.template = $interpolate(response.data)(model);
+
+                        }).catch(function catchError() {
+
+                            // Unable to find the supplied template path.
+                            $scope.throwException('Invalid context menu path: "' + templatePath + '"');
 
                         });
 
@@ -173,7 +188,14 @@
                         // Prevent the default context menu from opening, and make the user
                         // defined context menu appear instead.
                         event.preventDefault();
-                        element.append($compile(scope.template)(scope.model));
+                        var compiledTemplate = $compile(scope.template)(scope.model);
+
+                        // Ensure the compiled template is only adding one child.
+                        if (compiledTemplate.length > 1) {
+                            scope.throwException('Context menu is adding ' + compiledTemplate.length + ' immediate children');
+                        }
+
+                        element.append(compiledTemplate);
 
                         // Keep a track of the added context menu for removing it if necessary.
                         var nativeElement = element[0],
