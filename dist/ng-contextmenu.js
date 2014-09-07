@@ -202,8 +202,9 @@
                         childCount    = nativeElement.childNodes.length;
 
                     // Update the position of the newly added context menu.
-                    scope.menu = $angular.element(nativeElement.childNodes[childCount - 1]);
-                    scope.menu.css({ top: event.clientY + 'px', left: event.clientX + 'px' });
+                    scope.menu    = $angular.element(nativeElement.childNodes[childCount - 1]);
+                    var translate =  'translate(' + event.clientX + 'px, ' + event.clientY + 'px)';
+                    scope.menu.css({ transform: translate });
 
                 });
 
