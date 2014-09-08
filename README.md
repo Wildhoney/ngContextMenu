@@ -24,7 +24,7 @@ First and foremost you must create your context menu, which should be placed int
 </ul>
 ```
 
-Once you have the partial configured you can hook up the `ngContextMenu` directive using the `data-context-menu` attribute &ndash; passing along the path to your previously crafted partial. You will also need to supply an `ngModel` which will be used to evaluate the template.
+Once you have the partial configured you can hook up the `ngContextMenu` directive using the `data-context-menu` attribute &ndash; passing along the path to your previously crafted partial. You may also supply an *optional* `ngModel` which will be used to evaluate the template &ndash; otherwise it will be evaluated against an empty object `({})`.
 
 ```html
 <li data-context-menu="context-menus/message.html" ng-model="message"></li>
