@@ -54,4 +54,4 @@ Thrown when the specified context menu path cannot be found:
  
 Thrown when the partial is adding more than one child &ndash; when **only** one is expected:
  
- > Context menu is adding *number* immediate children.
+ > Context menu is adding *number* child nodes.

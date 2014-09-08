@@ -68,7 +68,7 @@
              * @property require
              * @type {String}
              */
-            require: 'ngModel',
+            require: '?ngModel',
 
             /**
              * @property scope
@@ -131,10 +131,10 @@
                 };
 
                 /**
-                 * @method cancel
+                 * @method cancelOne
                  * @return {void}
                  */
-                $scope.cancel = function cancel() {
+                $scope.cancelOne = function cancelOne() {
 
                     if ($scope.menu) {
                         $scope.menu.remove();
@@ -169,12 +169,12 @@
                 }
 
                 // Evaluate the supplied template against the model.
-                scope.cacheTemplate(scope.include, scope.model);
+                scope.cacheTemplate(scope.include, scope.model || {});
 
                 // Listen for any attempts to cancel the current context menu.
                 scope.$watch(function setupObserver() {
                     return contextMenu.cancelIteration;
-                }, scope.cancel);
+                }, scope.cancelOne);
 
                 element.bind('contextmenu', function onContextMenu(event) {
 
@@ -190,9 +190,11 @@
                     event.preventDefault();
                     var compiledTemplate = $compile(scope.template)(scope.model);
 
-                    // Ensure the compiled template is only adding one child.
                     if (compiledTemplate.length > 1) {
-                        scope.throwException('Context menu is adding ' + compiledTemplate.length + ' immediate children');
+
+                        // Throw exception when the compiled template is adding more than one child node.
+                        scope.throwException('Context menu is adding ' + compiledTemplate.length + ' child nodes');
+
                     }
 
                     element.append(compiledTemplate);
