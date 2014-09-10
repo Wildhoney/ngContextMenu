@@ -7,7 +7,7 @@
      * @controller MessagesController
      * @type {Function}
      */
-    app.controller('MessagesController', function MessagesController($scope, contextMenu) {
+    app.controller('MessagesController', function MessagesController($scope, $timeout) {
 
         /**
          * @property messages

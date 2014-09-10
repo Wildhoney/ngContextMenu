@@ -93,6 +93,12 @@
                 $scope.template = '';
 
                 /**
+                 * @property event
+                 * @type {Object|null}
+                 */
+                $scope.event = null;
+
+                /**
                  * @property menu
                  * @type {Object|null}
                  */
@@ -111,15 +117,14 @@
                 /**
                  * @method cacheTemplate
                  * @param templatePath {String}
-                 * @param model {Object}
                  * @return {void}
                  */
-                $scope.cacheTemplate = function cacheTemplate(templatePath, model) {
+                $scope.cacheTemplate = function cacheTemplate(templatePath) {
 
                     $http.get(templatePath, { cache: $templateCache }).then(function then(response) {
 
-                        // Interpolate the supplied template with the scope.
-                        $scope.template = $interpolate(response.data)(model);
+                        // Define the template with expressions.
+                        $scope.template = response.data;
 
                     }).catch(function catchError() {
 
@@ -138,6 +143,7 @@
 
                     if ($scope.menu) {
                         $scope.menu.remove();
+                        $scope.event = null;
                     }
 
                 };
@@ -176,19 +182,23 @@
                     return contextMenu.cancelIteration;
                 }, scope.cancelOne);
 
-                element.bind('contextmenu', function onContextMenu(event) {
+                /**
+                 * @method render
+                 * @param event {Object}
+                 * @return {void}
+                 */
+                scope.render = function render(event) {
 
-                    scope.$apply(function apply() {
-
-                        // Remove any existing context menus for this element and other elements.
-                        contextMenu.cancelAll();
-
-                    });
+                    if (!event) {
+                        return;
+                    }
 
                     // Prevent the default context menu from opening, and make the user
                     // defined context menu appear instead.
                     event.preventDefault();
-                    var compiledTemplate = $compile(scope.template)(scope.model);
+
+                    var interpolated     = $interpolate(scope.template)(scope.model),
+                        compiledTemplate = angular.element(interpolated);
 
                     if (compiledTemplate.length > 1) {
 
@@ -205,10 +215,41 @@
 
                     // Update the position of the newly added context menu.
                     scope.menu    = $angular.element(nativeElement.childNodes[childCount - 1]);
-                    var translate =  'translate(' + event.clientX + 'px, ' + event.clientY + 'px)';
+                    var translate = 'translate(' + event.clientX + 'px, ' + event.clientY + 'px)';
                     scope.menu.css({ transform: translate });
 
+                    // Memorise the event for re-rendering.
+                    scope.event = event;
+
+                };
+
+                // Bind to the context menu event.
+                element.bind('contextmenu', function onContextMenu(event) {
+
+                    scope.$apply(function apply() {
+
+                        // Remove any existing context menus for this element and other elements.
+                        contextMenu.cancelAll();
+
+                    });
+
+                    scope.render(event);
+
                 });
+
+                if (scope.model) {
+
+
+                    scope.$watch('model', function modelChanged() {
+
+                        // Re-render the context menu if necessary.
+                        var event = scope.event;
+                        scope.cancelOne();
+                        scope.render(event);
+
+                    }, true);
+
+                }
 
             }
 
