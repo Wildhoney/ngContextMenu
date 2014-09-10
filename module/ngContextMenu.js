@@ -239,7 +239,6 @@
 
                 if (scope.model) {
 
-
                     scope.$watch('model', function modelChanged() {
 
                         // Re-render the context menu if necessary.
