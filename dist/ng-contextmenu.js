@@ -197,8 +197,6 @@
                     // defined context menu appear instead.
                     event.preventDefault();
 
-                    console.log($compile(scope.template)(scope.model));
-
                     var interpolated     = $interpolate(scope.template)(scope.model || {}),
                         compiledTemplate = angular.element(interpolated);
 
