@@ -198,7 +198,8 @@
                     event.preventDefault();
 
                     var interpolated     = $interpolate(scope.template)(scope.model || {}),
-                        compiledTemplate = angular.element(interpolated);
+                        template         = angular.element(interpolated),
+                        compiledTemplate = $compile(template)(angular.extend(scope.$parent, scope.model));
 
                     if (compiledTemplate.length > 1) {
 
