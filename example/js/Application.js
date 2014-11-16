@@ -7,7 +7,7 @@
      * @controller MessagesController
      * @type {Function}
      */
-    app.controller('MessagesController', function MessagesController($scope) {
+    app.controller('MessagesController', function MessagesController($scope, $log) {
 
         /**
          * @property messages
@@ -19,8 +19,13 @@
             { subject: 'I Recommend "JavaScript: The Good Parts"!', from: 'Alison', date: new Date() }
         ];
 
+        /**
+         * @method replyTo
+         * @param name {String}
+         * @return {void}
+         */
         $scope.replyTo = function replyTo(name) {
-            console.log('Reply to ' + name);
+            $log.info('Reply to ' + name);
         };
 
     });
