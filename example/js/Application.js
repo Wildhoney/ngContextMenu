@@ -19,6 +19,10 @@
             { subject: 'I Recommend "JavaScript: The Good Parts"!', from: 'Alison', date: new Date() }
         ];
 
+        $scope.replyTo = function replyTo(name) {
+            console.log('Reply to ' + name);
+        };
+
     });
 
 })(window.angular);
