@@ -27,6 +27,12 @@
         factory.cancelIteration = 1;
 
         /**
+         * @property isOpening
+         * @type {Boolean}
+         */
+        factory.isOpening = false;
+
+        /**
          * @property attachedClick
          * @type {Boolean}
          */
@@ -156,16 +162,21 @@
              * @param element {Object}
              * @return {void}
              */
-            link: function link(scope, element) {
+            link: function link(scope, element, attributes) {
 
                 if (!contextMenu.attachedClick) {
 
-                    // Subscribe to the onClick event of the BODY node to remove any context menus
+                    // Subscribe to the onClick event of the HTML node to remove any context menus
                     // that may be open.
-                    var body = $angular.element($window.document.getElementsByTagName('html'));
+                    var htmlElement = $angular.element($window.document.getElementsByTagName('html'));
                     contextMenu.attachedClick = true;
 
-                    body.bind('click', function onClick() {
+                    htmlElement.bind('click', function onClick() {
+
+                        if (attributes.contextEvent === 'click' && contextMenu.isOpening) {
+                            contextMenu.isOpening = false;
+                            return;
+                        }
 
                         // Remove all of the open context menus.
                         scope.$apply(contextMenu.cancelAll);
@@ -225,7 +236,7 @@
                 };
 
                 // Bind to the context menu event.
-                element.bind('contextmenu', function onContextMenu(event) {
+                element.bind(attributes.contextEvent || 'contextmenu', function onContextMenu(event) {
 
                     scope.$apply(function apply() {
 
@@ -235,6 +246,7 @@
                     });
 
                     scope.render(event);
+                    contextMenu.isOpening = true;
 
                 });
 
