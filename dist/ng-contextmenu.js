@@ -227,7 +227,7 @@
 
                     // Update the position of the newly added context menu.
                     scope.menu    = $angular.element(nativeElement.childNodes[childCount - 1]);
-                    var translate = 'translate(' + event.clientX + 'px, ' + event.clientY + 'px)';
+                    var translate = 'translate(' + event.pageX + 'px, ' + event.pageY + 'px)';
                     scope.menu.css({ transform: translate });
 
                     // Memorise the event for re-rendering.
