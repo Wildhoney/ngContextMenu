@@ -27,7 +27,7 @@
                             data-context-event="contextmenu"
                             data-context-menu="context-menus/message.html">
 
-            <h2><a href="#">{{message.subject}}</a></h2>
+            <h2 data-context-menu="context-menus/subject.html"><a href="#">{{message.subject}}</a></h2>
             <div class="sent">Sent by {{message.from}} on {{message.date | date: "dd MMM yy"}}</div>
 
         </li>
