@@ -160,6 +160,7 @@
              * @method link
              * @param scope {Object}
              * @param element {Object}
+             * @param attributes {Object}
              * @return {void}
              */
             link: function link(scope, element, attributes) {
@@ -237,6 +238,8 @@
 
                 // Bind to the context menu event.
                 element.bind(attributes.contextEvent || 'contextmenu', function onContextMenu(event) {
+
+                    event.stopPropagation();
 
                     scope.$apply(function apply() {
 
