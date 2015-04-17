@@ -30,4 +30,29 @@
 
     });
 
+    /**
+     * @controlelr MessageController
+     * @type {Function}
+     */
+    app.controller('MessageController', function MessageController() {
+
+        /**
+         * @method readMessage
+         * @return {void}
+         */
+        this.readMessage = function readMessage() {
+            console.log('Reading Message!');
+        };
+
+        /**
+         * @property label
+         * @type {Object}
+         */
+        this.label = {
+            read: 'Read Message',
+            delete: 'Delete Message'
+        }
+
+    });
+
 })(window.angular);

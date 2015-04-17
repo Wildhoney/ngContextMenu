@@ -22,7 +22,8 @@
 
     <ul class="messages">
 
-        <li class="message" ng-repeat="message in messages"
+        <li class="message" ng-controller="MessageController as mc"
+                            ng-repeat="message in messages"
                             ng-model="message"
                             data-context-event="contextmenu"
                             data-context-menu="context-menus/message.html">
