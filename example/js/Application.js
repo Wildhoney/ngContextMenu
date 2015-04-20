@@ -1,4 +1,4 @@
-(function($angular) {
+(function($angular, $document) {
 
     // Рукописи не горят!
     var app = $angular.module('menuApp', ['ngContextMenu']);
@@ -7,7 +7,12 @@
      * @controller MessagesController
      * @type {Function}
      */
-    app.controller('MessagesController', function MessagesController($scope, $log) {
+    app.controller('MessagesController', function MessagesController($scope, $log, $timeout, contextMenu) {
+
+        $document.body.addEventListener('click', function click() {
+            contextMenu.cancelAll();
+            $scope.$apply();
+        });
 
         /**
          * @property messages
@@ -27,6 +32,10 @@
         $scope.replyTo = function replyTo(name) {
             $log.info('Reply to ' + name);
         };
+
+        $timeout(function timeout() {
+            $scope.messages[1].from = 'Adam';
+        }, 2000);
 
     });
 
@@ -55,4 +64,4 @@
 
     });
 
-})(window.angular);
+})(window.angular, window.document);

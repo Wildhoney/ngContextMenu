@@ -96,6 +96,20 @@ module.exports = function(grunt) {
                              ]
                 }
             }
+        },
+
+        /**
+         * @property watch
+         * @type {Object}
+         */
+        watch: {
+            scripts: {
+                files: ['module/*.js'],
+                tasks: ['build'],
+                options: {
+                    spawn: false
+                }
+            }
         }
 
     });
@@ -105,10 +119,12 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-compress');
     grunt.loadNpmTasks('grunt-contrib-concat');
+    grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-contrib-copy');
 
     grunt.registerTask('build', ['concat', 'uglify', 'copy', 'compress']);
-    grunt.registerTask('test', ['jshint', 'jasmine']);
+    //grunt.registerTask('test', ['jshint', 'jasmine']);
+    grunt.registerTask('test', ['jshint']);
     grunt.registerTask('default', ['test', 'build']);
 
 };

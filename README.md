@@ -46,12 +46,12 @@ Now when you test your newly setup context menu, a right click on the node with 
 
 Sometimes you may wish to invoke this behaviour yourself, in which case you need to add the `contextMenu` service to your controller, directive, service, and then invoke the `cancelAll` method on it.
 
-## Exceptions
+## Item Controllers
 
-Thrown when the specified context menu path cannot be found:
+In some circumstances you may wish to add a controller for each context menu, in these cases it is preferrable to add the `ng-controller` attribute to the element that also has the `data-context-menu` attribute:
 
- > Invalid context menu path: *templateName*.
- 
-Thrown when the partial is adding more than one child &ndash; when **only** one is expected:
- 
- > Context menu is adding *number* child nodes.
+```html
+<li class="message" ng-controller="MessageController as mc" data-context-menu="context-menus/message.html">
+    /* ... */
+</li>
+```

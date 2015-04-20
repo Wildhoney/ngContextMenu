@@ -15,42 +15,19 @@
      * @author Adam Timberlake
      * @link https://github.com/Wildhoney/ngContextMenu
      */
-    module.factory('contextMenu', function contextMenuService() {
-
-        var factory = {};
+    module.factory('contextMenu', ['$rootScope', function contextMenuService($rootScope) {
 
         /**
-         * @property cancelIteration
-         * @type {Number}
-         * @default 0
-         */
-        factory.cancelIteration = 1;
-
-        /**
-         * @property isOpening
-         * @type {Boolean}
-         */
-        factory.isOpening = false;
-
-        /**
-         * @property attachedClick
-         * @type {Boolean}
-         */
-        factory.attachedClick = false;
-
-        /**
-         * Responsible for closing all of the visible context menus.
-         *
          * @method cancelAll
          * @return {void}
          */
-        factory.cancelAll = function cancelAll() {
-            factory.cancelIteration++;
-        };
+        function cancelAll() {
+            $rootScope.$broadcast('context-menu/close');
+        }
 
-        return factory;
+        return { cancelAll: cancelAll };
 
-    });
+    }]);
 
     /**
      * @module ngContextMenu
@@ -58,9 +35,9 @@
      * @author Adam Timberlake
      * @link https://github.com/Wildhoney/ngContextMenu
      */
-    module.directive('contextMenu', ['$window', '$http', '$interpolate', '$compile', '$templateCache', 'contextMenu',
+    module.directive('contextMenu', ['$http', '$interpolate', '$compile', 'contextMenu',
 
-        function contextMenuDirective($window, $http, $interpolate, $compile, $templateCache, contextMenu) {
+        function contextMenuDirective($http, $interpolate, $compile, contextMenu) {
 
             return {
 
@@ -71,212 +48,118 @@
                 restrict: 'EA',
 
                 /**
+                 * @property scope
+                 * @type {Boolean}
+                 */
+                scope: true,
+
+                /**
                  * @property require
                  * @type {String}
                  */
                 require: '?ngModel',
 
                 /**
-                 * @property scope
-                 * @type {Object}
-                 */
-                scope: {
-                    include: '@contextMenu',
-                    model: '=ngModel'
-                },
-
-                /**
-                 * @method controller
-                 * @param $scope {Object}
-                 * @return {void}
-                 */
-                controller: ['$scope', function controller($scope) {
-
-                    /**
-                     * @property template
-                     * @type {String}
-                     */
-                    $scope.template = '';
-
-                    /**
-                     * @property event
-                     * @type {Object|null}
-                     */
-                    $scope.event = null;
-
-                    /**
-                     * @property menu
-                     * @type {Object|null}
-                     */
-                    $scope.menu = null;
-
-                    /**
-                     * @method throwException
-                     * @throw Exception
-                     * @param message {String}
-                     * @return {void}
-                     */
-                    $scope.throwException = function throwException(message) {
-                        throw "ngContextMenu: " + message + ".";
-                    };
-
-                    /**
-                     * @method cacheTemplate
-                     * @param templatePath {String}
-                     * @return {void}
-                     */
-                    $scope.cacheTemplate = function cacheTemplate(templatePath) {
-
-                        $http.get(templatePath, { cache: $templateCache }).then(function then(response) {
-
-                            // Define the template with expressions.
-                            $scope.template = response.data;
-
-                        }).catch(function catchError() {
-
-                            // Unable to find the supplied template path.
-                            $scope.throwException('Invalid context menu path: "' + templatePath + '"');
-
-                        });
-
-                    };
-
-                    /**
-                     * @method cancelOne
-                     * @return {void}
-                     */
-                    $scope.cancelOne = function cancelOne() {
-
-                        if ($scope.menu) {
-                            $scope.menu.remove();
-                            $scope.event = null;
-                        }
-
-                    };
-
-                }],
-
-                /**
                  * @method link
-                 * @param scope {Object}
-                 * @param element {Object}
-                 * @param attributes {Object}
+                 * @param {Object} scope
+                 * @param {angular.element} element
+                 * @param {Object} attributes
+                 * @param {Object} model
                  * @return {void}
                  */
-                link: function link(scope, element, attributes) {
+                link: function link(scope, element, attributes, model) {
 
-                    if (!contextMenu.attachedClick) {
+                    /**
+                     * @method closeMenu
+                     * @return {void}
+                     */
+                    function closeMenu() {
 
-                        // Subscribe to the onClick event of the HTML node to remove any context menus
-                        // that may be open.
-                        var htmlElement = $angular.element($window.document.getElementsByTagName('html'));
-                        contextMenu.attachedClick = true;
-
-                        htmlElement.bind('click', function onClick() {
-
-                            if (attributes.contextEvent === 'click' && contextMenu.isOpening) {
-                                contextMenu.isOpening = false;
-                                return;
-                            }
-
-                            // Remove all of the open context menus.
-                            scope.$apply(contextMenu.cancelAll);
-
-                        });
+                        if (scope.menu) {
+                            scope.menu.remove();
+                            scope.menu     = null;
+                            scope.position = null;
+                        }
 
                     }
 
-                    // Evaluate the supplied template against the model.
-                    scope.cacheTemplate(scope.include, scope.model || {});
+                    scope.$on('context-menu/close', closeMenu);
 
-                    // Listen for any attempts to cancel the current context menu.
-                    scope.$watch(function setupObserver() {
-                        return contextMenu.cancelIteration;
-                    }, scope.cancelOne);
+                    /**
+                     * @method getModel
+                     * @return {Object}
+                     */
+                    function getModel() {
+                        return model ? $angular.extend(scope, model.$modelValue) : scope;
+                    }
 
                     /**
                      * @method render
-                     * @param event {Object}
+                     * @param {Object} event
+                     * @param {String} [strategy="append"]
                      * @return {void}
                      */
-                    scope.render = function render(event) {
+                    function render(event, strategy) {
 
-                        if (!event) {
-                            return;
-                        }
+                        strategy = strategy || 'append';
 
-                        // Prevent the default context menu from opening, and make the user
-                        // defined context menu appear instead.
-                        event.preventDefault();
+                        if ('preventDefault' in event) {
 
-                        var extendedScope = scope.model;
+                            contextMenu.cancelAll();
+                            event.stopPropagation();
+                            event.preventDefault();
+                            scope.position = { x: event.clientX, y: event.clientY };
 
-                        console.log(extendedScope);
+                        } else {
 
-                        Object.keys(scope.$parent).forEach(function forEach(key) {
-
-                            if (!key.match(/^\$/) && key !== 'this') {
-                                extendedScope[key] = scope.$parent[key];
+                            if (!scope.menu) {
+                                return;
                             }
 
-                        });
-
-                        var interpolated     = $interpolate(scope.template)(scope.model),
-                            template         = $angular.element(interpolated),
-                            compiledTemplate = $compile(template)($angular.extend(scope.$parent, scope.model));
-
-                        if (compiledTemplate.length > 1) {
-
-                            // Throw exception when the compiled template is adding more than one child node.
-                            scope.throwException('Context menu is adding ' + compiledTemplate.length + ' child nodes');
-
                         }
 
-                        element.append(compiledTemplate);
+                        $http.get(attributes.contextMenu, { cache: true }).then(function then(response) {
 
-                        // Keep a track of the added context menu for removing it if necessary.
-                        var nativeElement = element[0],
-                            childCount    = nativeElement.childNodes.length;
+                            var interpolated = $interpolate(response.data)($angular.extend(getModel())),
+                                compiled     = $compile(interpolated)(scope),
+                                menu         = $angular.element(compiled);
 
-                        // Update the position of the newly added context menu.
-                        scope.menu    = $angular.element(nativeElement.childNodes[childCount - 1]);
-                        var translate = 'translate(' + event.clientX + 'px, ' + event.clientY + 'px)';
-                        scope.menu.css({ transform: translate });
+                            // Determine whether to append new, or replace an existing.
+                            switch (strategy) {
+                                case ('append'): element.append(menu); break;
+                                default: scope.menu.replaceWith(menu); break;
+                            }
 
-                        // Memorise the event for re-rendering.
-                        scope.event = event;
+                            menu.css({
 
-                    };
+                                position: 'absolute',
+                                transform: $interpolate('translate({{x}}px, {{y}}px)')({
+                                    x: scope.position.x, y: scope.position.y
+                                })
 
-                    // Bind to the context menu event.
-                    element.bind(attributes.contextEvent || 'contextmenu', function onContextMenu(event) {
+                            });
 
-                        event.stopPropagation();
-
-                        scope.$apply(function apply() {
-
-                            // Remove any existing context menus for this element and other elements.
-                            contextMenu.cancelAll();
+                            scope.menu = menu;
+                            scope.menu.bind('click', closeMenu);
 
                         });
 
-                        scope.render(event);
-                        contextMenu.isOpening = true;
+                    }
 
-                    });
+                    if (model) {
 
-                    if (scope.model) {
+                        var listener = function listener() {
+                            return model.$modelValue;
+                        };
 
-                        scope.$watch('model', function modelChanged() {
-
-                            // Re-render the context menu if necessary.
-                            var event = scope.event;
-                            scope.cancelOne();
-                            scope.render(event);
-
+                        // Listen for updates to the model...
+                        scope.$watch(listener, function modelChanged() {
+                            render({}, 'replaceWith');
                         }, true);
 
                     }
+
+                    element.bind(attributes.contextEvent || 'contextmenu', render);
 
                 }
 
