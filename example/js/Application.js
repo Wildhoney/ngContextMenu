@@ -9,7 +9,7 @@
      */
     app.controller('MessagesController', function MessagesController($scope, $log, $timeout, contextMenu) {
 
-        $document.body.addEventListener('click', function click() {
+        $document.addEventListener('click', function click() {
             contextMenu.cancelAll();
             $scope.$apply();
         });
