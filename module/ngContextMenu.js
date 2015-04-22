@@ -71,8 +71,6 @@
 
                     if (!contextMenu.eventBound) {
 
-                        console.log('Here');
-
                         // Bind to the `document` if we haven't already.
                         $document.addEventListener('click', function click() {
                             contextMenu.cancelAll();
