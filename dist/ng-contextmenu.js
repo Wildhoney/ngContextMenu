@@ -1,4 +1,4 @@
-(function ContextMenu($angular) {
+(function ContextMenu($angular, $document) {
 
     "use strict";
 
@@ -25,7 +25,7 @@
             $rootScope.$broadcast('context-menu/close');
         }
 
-        return { cancelAll: cancelAll };
+        return { cancelAll: cancelAll, eventBound: false };
 
     }]);
 
@@ -68,6 +68,20 @@
                  * @return {void}
                  */
                 link: function link(scope, element, attributes, model) {
+
+                    if (!contextMenu.eventBound) {
+
+                        console.log('Here');
+
+                        // Bind to the `document` if we haven't already.
+                        $document.addEventListener('click', function click() {
+                            contextMenu.cancelAll();
+                            scope.$apply();
+                        });
+
+                        contextMenu.eventBound = true;
+
+                    }
 
                     /**
                      * @method closeMenu
@@ -167,4 +181,4 @@
 
         }]);
 
-})(window.angular);
+})(window.angular, window.document);

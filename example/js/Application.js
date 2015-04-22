@@ -1,4 +1,4 @@
-(function($angular, $document) {
+(function($angular) {
 
     // Рукописи не горят!
     var app = $angular.module('menuApp', ['ngContextMenu']);
@@ -7,12 +7,7 @@
      * @controller MessagesController
      * @type {Function}
      */
-    app.controller('MessagesController', function MessagesController($scope, $log, $timeout, contextMenu) {
-
-        $document.addEventListener('click', function click() {
-            contextMenu.cancelAll();
-            $scope.$apply();
-        });
+    app.controller('MessagesController', function MessagesController($scope, $log, $timeout) {
 
         /**
          * @property messages
@@ -64,4 +59,4 @@
 
     });
 
-})(window.angular, window.document);
+})(window.angular);
