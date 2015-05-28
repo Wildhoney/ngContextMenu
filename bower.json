@@ -6,7 +6,7 @@
     "Adam Timberlake <adam.timberlake@gmail.com>"
   ],
   "description": "Handcraft your very own context menus for a richer UX!",
-  "main": "dist/ng-context-menu.js",
+  "main": "dist/ng-contextmenu.js",
   "license": "MIT",
   "ignore": [
     "**/.*",
