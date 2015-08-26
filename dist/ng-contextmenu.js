@@ -35,9 +35,9 @@
      * @author Adam Timberlake
      * @link https://github.com/Wildhoney/ngContextMenu
      */
-    module.directive('contextMenu', ['$http', '$timeout', '$interpolate', '$compile', 'contextMenu',
+    module.directive('contextMenu', ['$timeout', '$interpolate', '$compile', 'contextMenu', '$templateRequest', 
 
-        function contextMenuDirective($http, $timeout, $interpolate, $compile, contextMenu) {
+        function contextMenuDirective($timeout, $interpolate, $compile, contextMenu, $templateRequest) {
 
             return {
 
@@ -130,9 +130,8 @@
 
                         }
 
-                        $http.get(attributes.contextMenu, { cache: true }).then(function then(response) {
-
-                            var compiled     = $compile(response.data)($angular.extend(getModel())),
+                       $templateRequest(attributes.contextMenu).then(function then(response) {
+                            var compiled     = $compile(response)($angular.extend(getModel())),
                                 menu         = $angular.element(compiled);
 
                             // Determine whether to append new, or replace an existing.
