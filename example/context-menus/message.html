@@ -8,8 +8,8 @@
         <img src="../images/bird30.png" />
         <a href="#" ng-click="replyTo(from)">Reply to {{from}}</a>
     </li>
-    <li>
+    <li ng-controller="DeleteController as dc">
         <img src="../images/pie27.png" />
-        <a href="#">{{mc.label.delete}}</a>
+        <a href="#" ng-click="dc.removeMessage(from)">{{mc.label.delete}}</a>
     </li>
 </ul>

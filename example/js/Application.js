@@ -35,7 +35,7 @@
     });
 
     /**
-     * @controlelr MessageController
+     * @controller MessageController
      * @type {Function}
      */
     app.controller('MessageController', function MessageController() {
@@ -55,6 +55,23 @@
         this.label = {
             read: 'Read Message',
             delete: 'Delete Message'
+        }
+
+    });
+
+    /**
+     * @controller DeleteController
+     * @type {Function}
+     */
+    app.controller('DeleteController', function DeleteController() {
+
+        /**
+         * @method removeMessage
+         * @param {String} from
+         * @return {void}
+         */
+        this.removeMessage = function removeMessage(from) {
+            console.log('Removing message from: ' + from);
         }
 
     });
