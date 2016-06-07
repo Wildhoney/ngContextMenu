@@ -136,7 +136,7 @@
 
                             // Determine whether to append new, or replace an existing.
                             switch (strategy) {
-                                case ('append'): element.append(menu); break;
+                                case ('append'): angular.element(document.body).append(menu); break;
                                 default: scope.menu.replaceWith(menu); break;
                             }
 
