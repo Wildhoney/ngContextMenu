@@ -105,7 +105,40 @@
                         return model ? $angular.extend(scope, model.$modelValue) : scope;
                     }
 
+                    
+				    /**
+                     * Avoids that the context menu is drawn off screen.
+                     */
+                    function calculateContextMenuTopCoordinates(menu, scopePosition) {
+                        var windowHeight = window.innerHeight;
+                        var windowWidth = window.innerWidth;
+                        var menuWidth = menu[0].clientWidth;
+                        var menuHeight = menu[0].clientHeight;
+                        var overflowScreenWidth = scopePosition.x + menuWidth > windowWidth;
+                        var overflowScreenHeigth = scopePosition.y + menuHeight > windowHeight;
+                        var x = overflowScreenWidth ? scopePosition.x - menuWidth : scopePosition.x;
+                        var y = overflowScreenHeigth ? scopePosition.y - menuHeight : scopePosition.y;
+                        return {x: x, y: y};
+                    }
+
                     /**
+                     * Wait 20ms to position the contextmenu because ng needs to draw the menu
+                     * first to get the exact width and height of the context menu panel.
+                     */
+                    function setContextMenuTopCoordinates(menu, scopePosition) {
+                        setTimeout(function () {
+                            var menuTopCoordinates = calculateContextMenuTopCoordinates(menu, scopePosition);
+                            menu.css({
+                                position: 'fixed',
+                                top: 0,
+                                left: 0,
+                                transform: $interpolate('translate({{x}}px, {{y}}px)')(menuTopCoordinates)
+                            });
+                        }, 20);
+                    }
+					
+					
+					/**
                      * @method render
                      * @param {Object} event
                      * @param {String} [strategy="append"]
@@ -139,18 +172,8 @@
                                 case ('append'): angular.element(document.body).append(menu); break;
                                 default: scope.menu.replaceWith(menu); break;
                             }
-
-                            menu.css({
-
-                                position: 'fixed',
-                                top: 0,
-                                left: 0,
-                                transform: $interpolate('translate({{x}}px, {{y}}px)')({
-                                    x: scope.position.x, y: scope.position.y
-                                })
-
-                            });
-
+							
+                            setContextMenuTopCoordinates(menu,scope.position);
                             scope.menu = menu;
                             scope.menu.bind('click', closeMenu);
 
