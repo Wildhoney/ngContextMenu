@@ -1,9 +1,10 @@
 {
   "name": "ng-contextmenu",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "description": "Handcraft your very own context menus for a richer UX!",
   "main": "dist/ng-contextmenu.js",
   "scripts": {
+    "build": "grunt build",
     "test": "grunt test",
     "start": "node example/server/default.js",
     "postinstall": "bower install; grunt build"
