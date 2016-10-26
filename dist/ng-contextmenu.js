@@ -10,6 +10,12 @@
     var module = $angular.module('ngContextMenu', []);
 
     /**
+     * @constant KEY_LEFT
+     * @type {Number}
+     */
+    var KEY_LEFT = 1;
+
+    /**
      * @module ngContextMenu
      * @service ContextMenu
      * @author Adam Timberlake
@@ -72,9 +78,12 @@
                     if (!contextMenu.eventBound) {
 
                         // Bind to the `document` if we haven't already.
-                        $document.addEventListener('click', function click() {
-                            contextMenu.cancelAll();
-                            scope.$apply();
+                        $document.addEventListener('click', function click(event) {
+
+                            if (event.which === KEY_LEFT) {
+                                contextMenu.cancelAll();
+                                scope.$apply();
+                            }
                         });
 
                         contextMenu.eventBound = true;
@@ -131,12 +140,13 @@
                         }
 
                         $templateRequest($sce.getTrustedResourceUrl(attributes.contextMenu)).then(function then(template) {
-                            var compiled     = $compile(template)($angular.extend(getModel())),
-                                menu         = $angular.element(compiled);
+
+                            var compiled = $compile(template)($angular.extend(getModel())),
+                                menu     = $angular.element(compiled);
 
                             // Determine whether to append new, or replace an existing.
                             switch (strategy) {
-                                case ('append'): angular.element(document.body).append(menu); break;
+                                case ('append'): angular.element($document.body).append(menu); break;
                                 default: scope.menu.replaceWith(menu); break;
                             }
 
@@ -145,7 +155,7 @@
                                 top: 0,
                                 left: 0,
                                 transform: $interpolate('translate({{x}}px, {{y}}px)')({
-                                    x: scope.position.x - 1, y: scope.position.y - 1
+                                    x: scope.position.x, y: scope.position.y
                                 })
                             });
 
