@@ -14,7 +14,13 @@ ngContextMenu
 
 Using `ngContextMenu` you can **easily** support custom context menus for your application! Custom context menus are somewhat underused, but applications such as [Gmail](http://gmail.com/) use them wisely to provide a richer UX.
 
-First and foremost you must create your context menu, which should be placed into your application as a separate file &ndash; a partial.
+First and foremost, you must add the script in your index.html and add the dependency to your module:
+
+```javascript
+var app = $angular.module('menuApp', ['ngContextMenu']);
+```
+
+Then, you must create your context menu, which should be placed into your application as a separate file &ndash; a partial.
 
 ```html
 <ul class="menu">
