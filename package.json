@@ -1,34 +1,34 @@
 {
-    "name": "ng-contextmenu",
-    "version": "0.7.4",
-    "description": "Handcraft your very own context menus for a richer UX!",
-    "main": "dist/ng-contextmenu.js",
-    "scripts": {
-        "build": "grunt build",
-        "test": "grunt test",
-        "start": "node example/server/default.js"
-    },
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/Wildhoney/ngContextMenu.git"
-    },
-    "author": "Adam Timberlake <adam.timberlake@gmail.com>",
-    "license": "MIT",
-    "bugs": {
-        "url": "https://github.com/Wildhoney/ngContextMenu/issues"
-    },
-    "homepage": "https://github.com/Wildhoney/ngContextMenu",
-    "devDependencies": {
-        "bower": "^1.7.9",
-        "express": "^4.14.0",
-        "grunt": "^0.4.5",
-        "grunt-cli": "^0.1.13",
-        "grunt-contrib-compress": "^0.11.0",
-        "grunt-contrib-concat": "^0.5.1",
-        "grunt-contrib-copy": "^0.5.0",
-        "grunt-contrib-jasmine": "^0.7.0",
-        "grunt-contrib-jshint": "^0.10.0",
-        "grunt-contrib-uglify": "^0.5.1",
-        "grunt-contrib-watch": "^1.0.0"
-    }
+  "name": "ng-contextmenu",
+  "version": "0.7.5",
+  "description": "Handcraft your very own context menus for a richer UX!",
+  "main": "dist/ng-contextmenu.js",
+  "scripts": {
+    "build": "grunt build",
+    "test": "grunt test",
+    "start": "node example/server/default.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Wildhoney/ngContextMenu.git"
+  },
+  "author": "Adam Timberlake <adam.timberlake@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Wildhoney/ngContextMenu/issues"
+  },
+  "homepage": "https://github.com/Wildhoney/ngContextMenu",
+  "devDependencies": {
+    "bower": "^1.7.9",
+    "express": "^4.14.0",
+    "grunt": "^0.4.5",
+    "grunt-cli": "^0.1.13",
+    "grunt-contrib-compress": "^0.11.0",
+    "grunt-contrib-concat": "^0.5.1",
+    "grunt-contrib-copy": "^0.5.0",
+    "grunt-contrib-jasmine": "^0.7.0",
+    "grunt-contrib-jshint": "^0.10.0",
+    "grunt-contrib-uglify": "^0.5.1",
+    "grunt-contrib-watch": "^1.0.0"
+  }
 }
