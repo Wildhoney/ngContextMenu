@@ -105,7 +105,8 @@
                     }
 
                     scope.$on('context-menu/close', closeMenu);
-
+                    scope.$on('$destroy', closeMenu);
+                    
                     /**
                      * @method getModel
                      * @return {Object}
