@@ -10,7 +10,8 @@ before_script:
 script:
   - npm install
   - bower install
-  - grunt test
+  - npm test
+  - npm run build
 
 deploy:
   provider: heroku
