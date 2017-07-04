@@ -9,6 +9,7 @@ ngContextMenu
 
 * **Heroku**: [http://ng-contextmenu.herokuapp.com/](http://ng-contextmenu.herokuapp.com/)
 * **Bower:** `bower install ng-contextmenu`
+* **NPM:** `npm install ng-contextmenu`
 
 # Getting Started
 
