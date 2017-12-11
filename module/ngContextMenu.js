@@ -130,7 +130,7 @@
                             contextMenu.cancelAll();
                             event.stopPropagation();
                             event.preventDefault();
-                            scope.position = { x: event.pageX, y: event.pageY };
+                            scope.position = { x: event.clientX, y: event.clientY };
 
                         } else {
 
