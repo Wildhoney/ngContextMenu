@@ -1,6 +1,6 @@
 {
   "name": "ng-contextmenu",
-  "version": "0.9.1",
+  "version": "0.10.0",
   "description": "Handcraft your very own context menus for a richer UX!",
   "main": "dist/ng-contextmenu.js",
   "scripts": {
