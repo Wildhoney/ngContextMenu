@@ -127,7 +127,7 @@
 
                         if ('preventDefault' in event) {
 
-                            contextMenu.cancelAll();
+                            if(!attributes.persistentMenu) { contextMenu.cancelAll(); }
                             event.stopPropagation();
                             event.preventDefault();
                             scope.position = { x: event.clientX, y: event.clientY };
@@ -140,36 +140,39 @@
 
                         }
 
-                        $templateRequest($sce.getTrustedResourceUrl(attributes.contextMenu)).then(function then(template) {
+                        var opened = scope.menu;
+                        if (attributes.persistentMenu) { contextMenu.cancelAll(); }
 
-                            var compiled = $compile(template)($angular.extend(getModel())),
-                                menu = $angular.element(compiled);
+                        if (!attributes.persistentMenu || !opened) {
+                            $templateRequest($sce.getTrustedResourceUrl(attributes.contextMenu)).then(function then(template) {
 
-                            // Determine whether to append new, or replace an existing.
-                            switch (strategy) {
-                                case ('append'):
-                                    angular.element($document.body).append(menu);
-                                    break;
-                                default:
-                                    scope.menu.replaceWith(menu);
-                                    break;
-                            }
+                                var compiled = $compile(template)($angular.extend(getModel())),
+                                    menu = $angular.element(compiled);
 
-                            menu.css({
-                                position: attributes.contextMenuPosition || 'fixed',
-                                top: 0,
-                                left: 0,
-                                transform: $interpolate('translate({{x}}px, {{y}}px)')({
-                                    x: scope.position.x,
-                                    y: scope.position.y
-                                })
+                                // Determine whether to append new, or replace an existing.
+                                switch (strategy) {
+                                    case ('append'):
+                                        angular.element($document.body).append(menu);
+                                        break;
+                                    default:
+                                        scope.menu.replaceWith(menu);
+                                        break;
+                                }
+
+                                menu.css({
+                                    position: attributes.contextMenuPosition || 'fixed',
+                                    top: 0,
+                                    left: 0,
+                                    transform: $interpolate('translate({{x}}px, {{y}}px)')({
+                                        x: scope.position.x,
+                                        y: scope.position.y
+                                    })
+                                });
+                                scope.menu = menu;
+                                if (!attributes.persistentMenu) { scope.menu.bind('click', closeMenu); }
+
                             });
-
-                            scope.menu = menu;
-                            scope.menu.bind('click', closeMenu);
-
-                        });
-
+                        }
                     }
 
                     if (model) {
